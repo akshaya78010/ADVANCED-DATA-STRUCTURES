@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+void Bfs(int graph[][100], int n, int start) {
+    bool visited[n];  // Declare visited array
+    for (int i = 0; i < n; i++) visited[i] = false;  // Initialize visited array
+
+    int queue[n];
+    int front = 0, rear = 0;
+
+    queue[rear++] = start;
+    visited[start] = true;
+
+    while (front < rear) {
+        int current = queue[front++];
+        printf("%d ", current);
+
+        for (int i = 0; i < n; i++) {
+            if (graph[current][i] == 1 && !visited[i]) {
+                queue[rear++] = i;
+                visited[i] = true;
+            }
+        }
+    }
+    printf("\n");
+}
+
+void dfs(int graph[][100], bool visited[], int n, int start) {
+    visited[start] = true;
+    printf("%d ", start);
+
+    for (int i = 0; i < n; i++) {
+        if (graph[start][i] == 1 && !visited[i]) {
+            dfs(graph, visited, n, i);
+        }
+    }
+}
+
+void DfsM(int graph[][100], int n, int start) {
+    bool visited[n];  // Declare visited array
+    for (int i = 0; i < n; i++) visited[i] = false;  // Initialize visited array
+    dfs(graph, visited, n, start);
+    printf("\n");
+}
+
+int main() {
+    int n, e;
+    scanf("%d %d", &n, &e);
+
+    int graph[100][100] = {0};  // Initialize graph with 0s
+
+    for (int i = 0; i < e; i++) {
+        int u, v;
+        scanf("%d %d", &u, &v);
+        graph[u][v] = 1;  // Undirected graph
+        graph[v][u] = 1;  // Undirected graph
+    }
+
+    Bfs(graph, n, 0);  // Call BFS
+    DfsM(graph, n, 0); // Call DFS
+
+    return 0;
+}
